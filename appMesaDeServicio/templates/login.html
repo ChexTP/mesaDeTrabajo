@@ -1,0 +1,27 @@
+{%extends "index.html" %}
+
+{%block header%}
+    {% include "header.html"%}
+{%endblock header%}
+
+{%block content%}
+<div class="IniciarSesion pt-3">
+    <form action="login/" method="post" class="carta">
+        <h3>Iniciar Sesion</h3>
+    <div class="cartaCentar">
+        <div>
+            <label for="usuario">Usuario:</label>
+            <input type="text" name="user" id="usuario" class="" required>
+        </div>
+        <div>
+            <label for="password">Contraseña:</label>
+            <input type="password" name="password" id="password" class="" required>
+        </div>
+        <div class="p-2">
+            <button class="btn btn-outline-primary" type="submit" >Aceptar</button>
+            <button class="btn btn-outline-danger">Cancelar</button>
+        </div>
+    </div>
+    </form>
+</div>
+{%endblock content%}
