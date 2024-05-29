@@ -99,9 +99,73 @@ def vistaSolicitud(request):
         oficinaAmbiente=OficinaAmbiente.objects.all()
         datoSesion = {"user": request.user,
                       "rol": request.user.groups.get().name,
-                      'oficinaAmbientes': oficinaAmbiente,
+                      'oficinasAmbientes': oficinaAmbiente,
                       }
         return render(request,"empleado/solicitud.html",datoSesion)
     else:
         mensaje="debe iniciar sesion"
         return render(request,"login.html",{"mensaje":mensaje})
+
+def solicitud_view(request):
+    if request.user.is_authenticated:
+        ambientes = OficinaAmbiente.objects.all()
+        session_data = {
+            "user": request.user,
+            "rol": request.user.groups.get().name,
+            "oficinasAmbientes": ambientes
+        }
+        
+        return render(request, "empleado/solicitud.html", session_data)
+    else:
+        mensaje = "iniciar sesion"
+        return render(request, "login.html", { "mensaje": mensaje })
+    
+
+from random import randint
+# registrando las solicitudes
+def registro_solicitud(request):
+    
+    try:
+        # valida que se guarde la informacon en ambas colecciones, no solamente en una
+        with transaction.atomic():
+            # guardando solicitud
+            user = request.user
+            descripcion = request.POST["descripcion"]
+            id_ambiente = int(request.POST["id_ambiente"])
+            ambiente = OficinaAmbiente.objects.get(pk=id_ambiente)
+            solicitud = Solicitud(
+                solicitudUsuario = user,
+                solicitudAmbiente = ambiente,
+                descripcion = descripcion
+            )
+            solicitud.save()
+            
+            # guardando caso
+            consecutivo = randint(1,1000)
+            codigo_caso = f"REQ {str(consecutivo).rjust(5, '0')}"
+            caso_user = User.objects.filter(groups__name__in=['Administrador']).first()
+            caso = Caso(
+                solicitudCaso = solicitud,
+                codigo = codigo_caso,
+                estado = 'Solicitada',
+                tecnicoAsignado = caso_user
+            )
+            caso.save()
+
+            return render(request, 'empleado/solicitud.html');        
+    # en caso de que hay algun error
+    except Error as error:
+        transaction.rollback()
+        print("Error al registrar la solicitud")
+        print(error)
+        mensaje = error;
+        return render(request, 'empleado/solicitud.html', {"message": mensaje})
+
+def listarCasos(request):
+    try:
+        listarCasos= Caso.objects.filter(casEstado="Solicitada")
+    except Error as error:
+        mensaje = str(error)
+    retorno= {"listarCasos":listarCasos}
+    return render(request,"administrador/listaCasos.html",retorno)
+

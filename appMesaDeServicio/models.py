@@ -62,8 +62,7 @@ class Caso(models.Model):
     casUsuario = models.ForeignKey(User, on_delete=models.PROTECT,db_comment="Empleado de soporte técnico asignado al caso")
     casEstado = models.CharField(max_length=15, choices=estadoCaso)
 
-    # fechaHoraCreacion = models.DateTimeField(auto_now_add=True,
-    #                                        db_comment="Fecha y hora del registro")
+    fechaHoraCreacion = models.DateTimeField(auto_now_add=True,db_comment="Fecha y hora del registro")
     fechaHoraActualizacion = models.DateTimeField(auto_now=True,db_comment="Fecha y hora última actualización")
 
 

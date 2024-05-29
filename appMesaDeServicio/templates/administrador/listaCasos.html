@@ -1,0 +1,39 @@
+{% extends "index.html" %}
+{% block header %}
+    {% include "header.html" %}
+{%endblock %}
+{% block menu %}
+    {% include "administrador/menu.html" %}
+{%endblock %}
+{% block content %}
+<h3></h3>
+    <table id="tblCasos" class="table table-bordered mt-3">
+        <thead>
+            <tr>
+                <th>Empleado</th>
+                <th>Descripcion</th>
+                <th>Oficina-Ambiente</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Asignar</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for caso in listarCasos%}
+                <tr>
+                    <td>{{caso.casSolicitud.solUsuario.first_name}}{{caso.casSolicitud.solUsuario.last_name}}</td>
+                    <td>{{caso.casSolicitud.solDescripcion}}</td>
+                    <td>{{caso.casSolicitud.solOficinaAMbiente.ofiNombre}}</td>
+                    <td>{{caso.casSolicitud.fechaHoraCreacion}}</td>
+                    <td>{{caso.casEStado}}</td>
+                    <td>
+                        <i class="fa fa-edit"> </i>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{%endblock %}
+{% block footer %}
+    {% include "footer.html" %}
+{%endblock %}
