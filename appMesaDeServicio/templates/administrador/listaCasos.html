@@ -27,12 +27,52 @@
                     <td>{{caso.casSolicitud.fechaHoraCreacion}}</td>
                     <td>{{caso.casEStado}}</td>
                     <td>
-                        <i class="fa fa-edit"> </i>
+                        <i class="fa fa-edit btn btn-primary" onclick="" data-bs-toggle="modal" data-bs-target="#modalTecnicos"> </i>
                     </td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+
+
+  
+  <!-- The Modal -->
+  <div class="modal" id="modalTecnicos">
+    <div class="modal-dialog">
+      <div class="modal-content">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Asignacion de tecnicos a casos</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body">
+            <form action="/asignarTecnico/">
+                <div>
+                    <label for="cdTecnico" class="fw-bold">Tecnico de soporte</label>
+                    <select name="" id="" class="form-select">
+                        <option value="">Seleccione</option>
+                        {% for tecnico in tecnicos%}
+                            <option value="{{tecnico.id}}">{{tecnico.first_name}} {{tecnico.last_name}}</option>
+                        {%endfor%}
+                    </select>
+
+                </div>
+                <input type="hidden" name="">
+            </form>
+        </div>
+  
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-accept" data-bs-dismiss="modal">Asignar</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+  
+      </div>
+    </div>
+  </div>
 {%endblock %}
 {% block footer %}
     {% include "footer.html" %}

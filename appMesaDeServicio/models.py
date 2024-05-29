@@ -50,6 +50,7 @@ class Solicitud(models.Model):
     solDescripcion = models.TextField(max_length=1000,db_comment="Texto que describe las solicitud del empleado")
     solOficinaAmbiente = models.ForeignKey(
         OficinaAmbiente, on_delete=models.PROTECT,db_comment="Fecha y hora del registro")
+    fechaHoraCreacion = models.DateTimeField(auto_now_add=True,db_comment="Fecha y hora de la solicitud")
     fechaHoraActualizacion = models.DateTimeField(auto_now=True,db_comment="Fecha y hora última actualización")
 
     def __str__(self) -> str:
@@ -64,6 +65,9 @@ class Caso(models.Model):
 
     fechaHoraCreacion = models.DateTimeField(auto_now_add=True,db_comment="Fecha y hora del registro")
     fechaHoraActualizacion = models.DateTimeField(auto_now=True,db_comment="Fecha y hora última actualización")
+
+    def __str__(self) -> str:
+        return self.casCodigo
 
 
 class TipoProcedimiento(models.Model):
